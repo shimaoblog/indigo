@@ -1,9 +1,7 @@
 name: Build Hexo & Deploy Pages
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -11,25 +9,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: false
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
-        run: pnpm install
-
+        run: npm install
       - name: Generate static files
-        run: pnpm exec hexo clean && pnpm exec hexo g
-
+        run: npx hexo clean && npx hexo g
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-
